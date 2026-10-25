@@ -1,0 +1,421 @@
+{
+  "info": {
+    "name": "Bài 2 Ecommerce Monolith MVP (Chuẩn Phiếu Chấm TH2)",
+    "description": "Postman Collection hoàn chỉnh cho Bài thực hành 2 - Kiến trúc Monolithic (Node.js + Express + Prisma + PostgreSQL)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3001"
+    },
+    {
+      "key": "adminUsername",
+      "value": "admin"
+    },
+    {
+      "key": "adminPassword",
+      "value": "6dd6ab79a3241e0405eb3d5d2cd0f16d2eea"
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "adminToken",
+      "value": ""
+    },
+    {
+      "key": "pidX",
+      "value": "1"
+    },
+    {
+      "key": "pidY",
+      "value": "2"
+    },
+    {
+      "key": "oid",
+      "value": "1"
+    },
+    {
+      "key": "shipid",
+      "value": "1"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Health check & System",
+      "item": [
+        {
+          "name": "Health Check (Database connected)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/health"
+          }
+        },
+        {
+          "name": "Liveness Check (HTTP alive)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/health/live"
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Auth (STT 6 Phiếu Chấm)",
+      "item": [
+        {
+          "name": "Register Customer (Role normal, Score 10)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/auth/register",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"khach01\",\n  \"fullname\": \"Nguyễn Văn A\",\n  \"password\": \"MatKhauDemo123!\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Login Customer (Lấy token)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"khach01\",\n  \"password\": \"MatKhauDemo123!\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code >= 200 && pm.response.code < 300) {",
+                  "    var json = pm.response.json();",
+                  "    pm.collectionVariables.set('token', json.accessToken);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login Admin",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"{{adminUsername}}\",\n  \"password\": \"{{adminPassword}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code >= 200 && pm.response.code < 300) {",
+                  "    var json = pm.response.json();",
+                  "    pm.collectionVariables.set('adminToken', json.accessToken);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get My Profile (/api/users/me)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/users/me"
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Products",
+      "item": [
+        {
+          "name": "List All Products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/products"
+          }
+        },
+        {
+          "name": "Create Product X (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/products",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pname\": \"X\",\n  \"price\": \"100000.00\",\n  \"quantity\": 50\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code >= 200 && pm.response.code < 300) {",
+                  "    var json = pm.response.json();",
+                  "    pm.collectionVariables.set('pidX', json.pid);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Product Y (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/products",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pname\": \"Y\",\n  \"price\": \"200000.00\",\n  \"quantity\": 50\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code >= 200 && pm.response.code < 300) {",
+                  "    var json = pm.response.json();",
+                  "    pm.collectionVariables.set('pidY', json.pid);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "4. Order & Shipment Flow (STT 7 Phiếu Chấm)",
+      "item": [
+        {
+          "name": "Order Without Token (Expect 401)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/orders",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"items\": [\n    {\n      \"pid\": {{pidX}},\n      \"qty\": 2\n    },\n    {\n      \"pid\": {{pidY}},\n      \"qty\": 5\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Order With Token (Mua X số lượng 2, Y số lượng 5)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/orders",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"items\": [\n    {\n      \"pid\": {{pidX}},\n      \"qty\": 2\n    },\n    {\n      \"pid\": {{pidY}},\n      \"qty\": 5\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code >= 200 && pm.response.code < 300) {",
+                  "    var json = pm.response.json();",
+                  "    pm.collectionVariables.set('oid', json.oid);",
+                  "    if (json.shipments && json.shipments.length > 0) {",
+                  "        pm.collectionVariables.set('shipid', json.shipments[0].shipid);",
+                  "    }",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "View Order Detail & Shipment",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/orders/{{oid}}"
+          }
+        },
+        {
+          "name": "View Shipments of Order",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/orders/{{oid}}/shipments"
+          }
+        },
+        {
+          "name": "Update Shipment Status -> SHIPPED (Admin)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/shipments/{{shipid}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"SHIPPED\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Update Shipment Status -> DELIVERED (Admin)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/shipments/{{shipid}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"DELIVERED\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

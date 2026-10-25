@@ -1,0 +1,63 @@
+name: ecommerce-monolith
+x-api: &api
+  build: .
+  image: ecommerce-monolith:local
+  environment: &env
+    PORT: 3001
+    DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?schema=public
+    JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in .env}
+    JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-1h}
+
+services:
+  postgres:
+    container_name: ecommerce-postgres
+    image: postgres:17-bookworm
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:?Set POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB:?Set POSTGRES_DB}
+    ports:
+      - "127.0.0.1:${POSTGRES_PORT:-5433}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", 'pg_isready -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+  migrate:
+    <<: *api
+    command: ["npx", "prisma", "migrate", "deploy"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      disable: true
+  seed:
+    <<: *api
+    command: ["node", "prisma/seed.js"]
+    environment:
+      <<: *env
+      ADMIN_USERNAME: ${ADMIN_USERNAME:?Set ADMIN_USERNAME}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?Set ADMIN_PASSWORD}
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      disable: true
+  api:
+    <<: *api
+    container_name: ecommerce-api
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${PORT:-3001}:3001"
+    volumes:
+      - ./src:/app/src
+    depends_on:
+      seed:
+        condition: service_completed_successfully
+volumes:
+  postgres_data:
+

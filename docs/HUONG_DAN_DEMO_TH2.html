@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>HƯỚNG DẪN DEMO VẤN ĐÁP THỰC HÀNH 2 - ECOMMERCE MONOLITH</title>
+<style>
+  @page {
+    size: A4 portrait;
+    margin: 10mm 12mm 10mm 12mm;
+  }
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #111111;
+    background: #ffffff;
+    line-height: 1.45;
+    font-size: 12px;
+    margin: 0;
+    padding: 0;
+  }
+
+  .page-sheet {
+    page-break-after: always;
+    height: 275mm;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .page-sheet:last-child {
+    page-break-after: avoid;
+  }
+  .page-content {
+    flex: 1;
+  }
+
+  /* HEADER */
+  .header-box {
+    border-bottom: 2.5px solid #0052cc;
+    padding-bottom: 6px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .header-title h1 {
+    font-size: 18px;
+    margin: 0 0 3px 0;
+    color: #002b66;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: -0.2px;
+  }
+  .header-subtitle {
+    font-size: 11px;
+    color: #444444;
+    margin: 0 0 2px 0;
+  }
+  .badge-container {
+    text-align: right;
+  }
+  .badge-score {
+    background: #15803d;
+    color: #ffffff;
+    font-weight: bold;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    display: inline-block;
+  }
+  .badge-env {
+    background: #0284c7;
+    color: #ffffff;
+    font-weight: bold;
+    padding: 2.5px 7px;
+    border-radius: 4px;
+    font-size: 10px;
+    display: inline-block;
+    margin-top: 3px;
+  }
+
+  /* HEADINGS */
+  h2 {
+    font-size: 13.5px;
+    color: #003366;
+    border-left: 3.5px solid #0052cc;
+    padding-left: 8px;
+    margin: 10px 0 6px 0;
+    text-transform: uppercase;
+  }
+  h3 {
+    font-size: 12.5px;
+    color: #111111;
+    margin: 8px 0 4px 0;
+    font-weight: bold;
+  }
+
+  /* CARDS */
+  .card {
+    background: #fbfbfb;
+    border: 1px solid #d1d5db;
+    border-radius: 5px;
+    padding: 8px 11px;
+    margin-bottom: 8px;
+  }
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 4px;
+    margin-bottom: 6px;
+  }
+  .card-title {
+    font-size: 12.5px;
+    font-weight: bold;
+    color: #002b66;
+  }
+  .card-point {
+    background: #e0f2fe;
+    color: #0369a1;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: 10px;
+    font-weight: bold;
+  }
+
+  /* CODE & PRE */
+  pre {
+    background: #f1f5f9;
+    color: #0f172a;
+    padding: 6px 9px;
+    border-radius: 4px;
+    font-size: 10.5px;
+    font-family: "Courier New", Courier, monospace;
+    font-weight: bold;
+    margin: 4px 0;
+    line-height: 1.4;
+    white-space: pre-wrap;
+    word-break: normal;
+    overflow-wrap: break-word;
+    border: 1px solid #cbd5e1;
+  }
+  code {
+    font-family: "Courier New", Courier, monospace;
+    font-size: 10.5px;
+    background: #f1f5f9;
+    padding: 1px 4px;
+    border-radius: 3px;
+    color: #0f172a;
+    font-weight: bold;
+  }
+  pre code {
+    background: transparent;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* DIALOGUE & CALLOUTS */
+  .say-box {
+    background: #f0f7ff;
+    border-left: 3px solid #2563eb;
+    padding: 5px 9px;
+    border-radius: 0 4px 4px 0;
+    margin: 5px 0 2px 0;
+    font-style: italic;
+    color: #1e40af;
+    font-size: 11px;
+    line-height: 1.4;
+  }
+  .say-title {
+    font-weight: bold;
+    font-style: normal;
+    color: #1d4ed8;
+    margin-bottom: 2px;
+    font-size: 10.5px;
+  }
+
+  .alert-box {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-left: 3.5px solid #dc2626;
+    padding: 7px 10px;
+    border-radius: 4px;
+    margin: 6px 0;
+    font-size: 11px;
+    color: #991b1b;
+  }
+  .alert-title {
+    font-weight: bold;
+    margin-bottom: 2px;
+    font-size: 11px;
+  }
+
+  /* TABLES */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 6px 0;
+    font-size: 10.5px;
+  }
+  th, td {
+    border: 1px solid #cbd5e1;
+    padding: 4.5px 7px;
+    text-align: left;
+    vertical-align: top;
+  }
+  th {
+    background: #f1f5f9;
+    color: #111111;
+    font-weight: bold;
+  }
+  tr:nth-child(even) td {
+    background: #fcfcfc;
+  }
+
+  ul, ol {
+    margin: 3px 0;
+    padding-left: 16px;
+  }
+  li {
+    margin-bottom: 2px;
+  }
+  p {
+    margin: 3px 0;
+  }
+
+  /* TIMELINE BOX */
+  .timeline-box {
+    background: #f8fafc;
+    border: 1.5px solid #2563eb;
+    color: #111111;
+    padding: 8px 11px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+  .timeline-box h3 {
+    color: #1e3a8a;
+    margin: 0 0 4px 0;
+    font-size: 12px;
+  }
+
+  /* FOOTER */
+  .footer-note {
+    font-size: 9.5px;
+    color: #666666;
+    text-align: center;
+    border-top: 1px dashed #cbd5e1;
+    padding-top: 3px;
+    margin-top: 5px;
+  }
+</style>
+</head>
+<body>
+
+  <!-- ==================== TRANG 1 ==================== -->
+  <div class="page-sheet">
+    <div class="page-content">
+      <div class="header-box">
+        <div class="header-title">
+          <h1>HƯỚNG DẪN DEMO VẤN ĐÁP THỰC HÀNH 2</h1>
+          <p class="header-subtitle"><strong>Môn học:</strong> Lập trình hướng dịch vụ (LTHDV / MSA) &bull; <strong>Dự án:</strong> Ecommerce Monolith</p>
+          <p class="header-subtitle"><strong>Kiến trúc:</strong> Node.js Express + Prisma ORM + PostgreSQL + Docker Compose</p>
+          <p class="header-subtitle"><strong>Chuẩn phiếu chấm:</strong> Bảng chấm thực hành 2 (8 mục / 8.0 Điểm tối đa)</p>
+        </div>
+        <div class="badge-container">
+          <span class="badge-score">MỤC TIÊU: 8/8 ĐIỂM</span><br>
+          <span class="badge-env">Môi trường: Windows CMD</span>
+        </div>
+      </div>
+
+      <div class="timeline-box">
+        <h3>[KỊCH BẢN THỰC HIỆN TUẦN TỰ 8 CÂU - CHUẨN XÁC VÀ GỌN GÀNG]</h3>
+        <ol style="margin: 0; padding-left: 16px; font-size: 10.5px;">
+          <li><strong>00s-08s (Lý thuyết):</strong> Chỉ <code>src/</code> (phân tầng routes, controllers, middlewares) &rarr; Chỉ GitHub (chặn <code>.env</code>) &rarr; Chỉ <code>schema.prisma</code> (7 model, <code>@@id([oid,pid])</code>, transaction Serializable). <em>(Đạt Câu 1, 2, 3)</em></li>
+          <li><strong>08s-18s (Terminal CMD & PostgreSQL):</strong> Chạy lần lượt <code>docker compose ps</code> và <code>curl http://localhost:3001/health</code> &rarr; Vào <code>psql</code> gõ <code>\dt</code> và chèn 2 SP X, Y. <em>(Đạt Câu 4, 5)</em></li>
+          <li><strong>18s-24s (Postman):</strong> Bấm Send <code>Register</code> (role: normal, score: 10) &rarr; Bấm Send <code>Login</code> (token) &rarr; Bấm Send <code>Order</code> (mua X: 2, Y: 5). <em>(Đạt Câu 6, 7)</em></li>
+          <li><strong>24s-30s (Đối chiếu cuối):</strong> Trong <code>psql</code> xem 4 bảng: Thấy X còn 48, Y còn 45, Order & Shipment đầy đủ! <em>(Đạt Câu 8 & Trọn vẹn 8/8 Điểm!)</em></li>
+        </ol>
+      </div>
+
+      <h2>CHI TIẾT 8 CÂU HỎI THEO PHIẾU CHẤM (CÂU 1 &bull; CÂU 2)</h2>
+
+      <!-- CÂU 1 -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">CÂU 1: Giải thích cấu trúc project đạt chuẩn Monolithic</span>
+          <span class="card-point">1.0 ĐIỂM</span>
+        </div>
+        <p><strong>Màn hình:</strong> VS Code mở rộng cây thư mục <code>src/</code>.</p>
+        <ul>
+          <li>Cấu trúc phân tầng rõ ràng: <code>routes/</code> (định tuyến), <code>controllers/</code> (nghiệp vụ), <code>middlewares/</code> (xác thực token Bearer & phân quyền admin), <code>validators/</code> (kiểm tra Zod).</li>
+          <li>Toàn bộ phân hệ (Auth, User, Role, Membership, Product, Order, Shipment) nằm chung trong <strong>1 ứng dụng Express duy nhất</strong> và chia sẻ <strong>1 cơ sở dữ liệu PostgreSQL</strong> duy nhất, gọi hàm nội bộ (in-process).</li>
+        </ul>
+        <div class="say-box">
+          <div class="say-title">[Nói mẫu với Giảng viên]</div>
+          "Dạ thưa thầy, dự án xây dựng chuẩn mô hình Monolithic theo cấu trúc phân tầng rõ ràng: thư mục routes/ định tuyến API, controllers/ xử lý nghiệp vụ, middlewares/ đảm nhiệm xác thực bảo mật và validators/ kiểm soát dữ liệu. Toàn bộ các phân hệ Auth, User, Product, Order và Shipment gom chung trong một mã nguồn Express và chia sẻ chung một cơ sở dữ liệu PostgreSQL."
+        </div>
+      </div>
+
+      <!-- CÂU 2 -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">CÂU 2: Giải thích .gitignore và .env trên GitHub</span>
+          <span class="card-point">1.0 ĐIỂM</span>
+        </div>
+        <p><strong>Màn hình:</strong> Trình duyệt Web mở repository GitHub của dự án.</p>
+        <ul>
+          <li>Mở file <code>.gitignore</code> &rarr; Chỉ vào các dòng: <code>.env</code>, <code>.env.*</code> và ngoại lệ <code>!.env.example</code>.</li>
+          <li>Quay lại danh sách file &rarr; Chứng minh có file <code>.env.example</code> nhưng <strong>tuyệt đối không có file <code>.env</code></strong>.</li>
+        </ul>
+        <p><strong>Lệnh kiểm tra tại máy local qua CMD:</strong> <code>type .gitignore</code></p>
+        <div class="say-box">
+          <div class="say-title">[Nói mẫu với Giảng viên]</div>
+          "Dạ thưa thầy, trên repository GitHub em đã cấu hình .gitignore chặn toàn bộ file .env chứa mật khẩu kết nối database PostgreSQL và JWT_SECRET. Em chỉ commit file .env.example làm mẫu cấu hình để bảo đảm an toàn bảo mật."
+        </div>
+      </div>
+    </div>
+    <div class="footer-note">Trang 1 / 4 — Hướng dẫn Demo Vấn đáp Thực hành 2 — Ecommerce Monolith</div>
+  </div>
+
+  <!-- ==================== TRANG 2 ==================== -->
+  <div class="page-sheet">
+    <div class="page-content">
+      <h2>CHI TIẾT CÁC CÂU HỎI TIẾP THEO (CÂU 3 &bull; CÂU 4 &bull; CÂU 5)</h2>
+
+      <!-- CÂU 3 -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">CÂU 3: Giải thích mã nguồn Prisma ORM</span>
+          <span class="card-point">1.0 ĐIỂM</span>
+        </div>
+        <p><strong>Màn hình:</strong> VS Code mở file <code>prisma/schema.prisma</code> và đoạn transaction trong <code>src/controllers/order.controller.js</code> (hàm <code>createOrder</code>).</p>
+        <ul>
+          <li>Định nghĩa đủ <strong>7 model quan hệ</strong>: <code>Role</code>, <code>MemberShip</code>, <code>User</code>, <code>Product</code>, <code>Order</code>, <code>OrderDetail</code>, <code>Shipment</code>.</li>
+          <li>Bảng trung gian <code>OrderDetail</code> dùng <strong>khóa chính kép</strong>: <code>@@id([oid, pid])</code>.</li>
+          <li>Luồng đặt hàng dùng <code>prisma.$transaction(..., { isolationLevel: 'Serializable' })</code> để đảm bảo toàn vẹn ACID.</li>
+        </ul>
+        <div class="say-box">
+          <div class="say-title">[Nói mẫu với Giảng viên]</div>
+          "Prisma ORM định nghĩa đầy đủ 7 bảng quan hệ chuẩn theo thiết kế. Bảng chi tiết đơn OrderDetail sử dụng khóa chính kết hợp @@id([oid, pid]). Khi tạo đơn hàng trong order.controller.js, hệ thống sử dụng prisma.$transaction ở mức cô lập Serializable để đảm bảo toàn vẹn dữ liệu và tránh tranh chấp kho."
+        </div>
+      </div>
+
+      <!-- CÂU 4 -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">CÂU 4: CLI: Compose hệ thống, system health check và liệt kê container</span>
+          <span class="card-point">1.0 ĐIỂM</span>
+        </div>
+        <p><strong>Lệnh 1 — Xem danh sách container:</strong></p>
+        <pre><code>docker compose ps</code></pre>
+        <p><strong>Lệnh 2 — Kiểm tra trạng thái sức khỏe (Healthcheck):</strong></p>
+        <pre><code>curl http://localhost:3001/health</code></pre>
+        <p><strong>Kết quả hiển thị:</strong> Container <code>ecommerce-api</code> và <code>ecommerce-postgres</code> đều <strong>`Up (healthy)`</strong>; JSON trả về <code>{"status":"healthy","database":"connected"}</code>.</p>
+        <p style="font-size: 10.5px; color: #0284c7; margin: 4px 0;"><strong>💡 Liên kết Bài 1 & 3:</strong> Bài 1 chỉ có 1 service; Bài 2 Monolith có <strong>2 container</strong> (chung 1 DB); Sang Bài 3 Microservices sẽ có <strong>13 container</strong> (6 services, 5 DB riêng, Kafka, Redis).</p>
+        <div class="say-box">
+          <div class="say-title">[Nói mẫu với Giảng viên]</div>
+          "Lệnh docker compose ps hiển thị đầy đủ 2 container ecommerce-api và ecommerce-postgres đang chạy đạt trạng thái Healthy. Endpoint /health thực hiện truy vấn SELECT 1 thật tới PostgreSQL và trả về HTTP 200 database: connected."
+        </div>
+      </div>
+
+      <!-- CÂU 5 -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">CÂU 5: PostgreSQL CLI: Kiểm tra các bảng dữ liệu & Tạo mới 2 SP X, Y</span>
+          <span class="card-point">1.0 ĐIỂM</span>
+        </div>
+        <p><strong>Bước 1: Vào container PostgreSQL bằng CMD:</strong></p>
+        <pre><code>docker exec -it ecommerce-postgres psql -U ecommerce -d ecommerce</code></pre>
+        <p><strong>Bước 2: Kiểm tra 7 bảng:</strong> <code>\dt</code></p>
+        <p><strong>Bước 3: Tạo 2 sản phẩm X (SL 50, giá 100) và Y (SL 50, giá 200):</strong></p>
+        <pre><code>INSERT INTO "Product" (pname, price, quantity) VALUES ('X', 100, 50), ('Y', 200, 50);</code></pre>
+        <p><strong>Bước 4: Xem lại sản phẩm vừa tạo:</strong></p>
+        <pre><code>SELECT * FROM "Product";</code></pre>
+        <p style="font-size: 10.5px; color: #475569; margin: 2px 0;"><em>(Thấy X và Y có SL ban đầu là 50. Để nguyên cửa sổ psql này để làm tiếp Câu 8).</em></p>
+        <p style="font-size: 10.5px; color: #0284c7; margin: 4px 0;"><strong>💡 Liên kết Bài 1 & 3:</strong> Bài 1 lưu Product vào MongoDB; Bài 2 lưu trong bảng quan hệ PostgreSQL; Sang Bài 3 Product được tách thành service riêng với database độc lập.</p>
+        <div class="say-box">
+          <div class="say-title">[Nói mẫu với Giảng viên]</div>
+          "Em truy cập vào container PostgreSQL bằng psql, dùng lệnh \\dt kiểm tra đủ 7 bảng theo thiết kế và chạy lệnh INSERT tạo mới 2 sản phẩm X và Y với số lượng ban đầu mỗi loại là 50."
+        </div>
+      </div>
+    </div>
+    <div class="footer-note">Trang 2 / 4 — Hướng dẫn Demo Vấn đáp Thực hành 2 — Ecommerce Monolith</div>
+  </div>
+
+  <!-- ==================== TRANG 3 ==================== -->
+  <div class="page-sheet">
+    <div class="page-content">
+      <h2>CHI TIẾT CÁC CÂU HỎI TIẾP THEO (CÂU 6 &bull; CÂU 7)</h2>
+
+      <!-- CÂU 6 -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">CÂU 6: POSTMAN: Đăng ký (Role normal, Score 10) &rarr; Đăng nhập &rarr; Token</span>
+          <span class="card-point">1.0 ĐIỂM</span>
+        </div>
+        <p><strong>Bước 1 - Đăng ký tài khoản mới:</strong></p>
+        <ul>
+          <li><strong>Method:</strong> <code>POST</code> &bull; <strong>URL:</strong> <code>http://localhost:3001/api/auth/register</code></li>
+          <li><strong>Body (raw JSON):</strong> <code>{"username":"khach01","fullname":"Nguyen Van A","password":"MatKhauDemo123!"}</code></li>
+          <li><strong>Kết quả:</strong> Trả về <code>201 Created</code> &rarr; Chỉ vào: <code>"role": {"rolename": "normal"}</code> và <code>"membership": {"score": 10}</code>.</li>
+        </ul>
+        <p><strong>Bước 2 - Đăng nhập tài khoản:</strong></p>
+        <ul>
+          <li><strong>Method:</strong> <code>POST</code> &bull; <strong>URL:</strong> <code>http://localhost:3001/api/auth/login</code></li>
+          <li><strong>Body (raw JSON):</strong> <code>{"username":"khach01","password":"MatKhauDemo123!"}</code></li>
+          <li><strong>Kết quả:</strong> Trả về <code>accessToken</code> (JWT Bearer Token). Postman đã tự động lưu token này vào biến.</li>
+        </ul>
+        <div class="say-box">
+          <div class="say-title">[Nói mẫu với Giảng viên]</div>
+          "Em gửi request đăng ký tài khoản mới; hệ thống tự động gán vai trò normal và hạng thành viên có score: 10. Khi đăng nhập bằng tài khoản vừa tạo, API xác thực mật khẩu qua bcrypt và trả về chuỗi JWT accessToken."
+        </div>
+      </div>
+
+      <!-- CÂU 7 -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">CÂU 7: POSTMAN: Luồng Đặt hàng (X: 2, Y: 5) &rarr; Detail &rarr; Shipment</span>
+          <span class="card-point">1.0 ĐIỂM</span>
+        </div>
+        <p><strong>Bước 1 - Đặt hàng không có Token (Chứng minh chặn bảo mật):</strong></p>
+        <ul>
+          <li><strong>Method:</strong> <code>POST</code> &bull; <strong>URL:</strong> <code>http://localhost:3001/api/orders</code> (không Header Authorization).</li>
+          <li><strong>Body:</strong> <code>{"items":[{"pid":1,"qty":2},{"pid":2,"qty":5}]}</code> &rarr; <strong>Kết quả:</strong> Báo lỗi <strong><code>401 Unauthorized</code></strong>.</li>
+        </ul>
+        <p><strong>Bước 2 - Đặt hàng có Token (Mua X số lượng 2, Y số lượng 5):</strong></p>
+        <ul>
+          <li>Thêm Header: <code>Authorization: Bearer &lt;accessToken&gt;</code> &rarr; Nhấn <strong>Send</strong>.</li>
+          <li><strong>Kết quả:</strong> Trả về mã <strong><code>201 Created</code></strong>:
+            <ul>
+              <li>Thời gian đặt hàng lấy thời gian hiện hành (<code>createat</code>).</li>
+              <li>Chi tiết đơn hàng: Mua 2 sản phẩm X và 5 sản phẩm Y.</li>
+              <li>Tự động chuyển sang shipment: Trả về mảng <code>shipments: [{"status":"PENDING"}]</code>.</li>
+            </ul>
+          </li>
+        </ul>
+        <p><strong>Bước 3 - Xem chi tiết đơn hàng:</strong> <code>GET http://localhost:3001/api/orders/1</code> (kèm Token) &rarr; Hiển thị chi tiết đơn và tổng tiền.</p>
+        <div class="say-box">
+          <div class="say-title">[Nói mẫu với Giảng viên]</div>
+          "Khi đặt hàng không có token, API từ chối với mã 401 Unauthorized. Khi có token hợp lệ, hệ thống tiến hành trừ kho mua 2 sản phẩm X và 5 sản phẩm Y, lưu thời gian tạo đơn hiện hành và tự động khởi tạo bản ghi Shipment trạng thái PENDING."
+        </div>
+      </div>
+    </div>
+    <div class="footer-note">Trang 3 / 4 — Hướng dẫn Demo Vấn đáp Thực hành 2 — Ecommerce Monolith</div>
+  </div>
+
+  <!-- ==================== TRANG 4 ==================== -->
+  <div class="page-sheet">
+    <div class="page-content">
+      <h2>CÂU 8 &bull; DỌN DẸP DỮ LIỆU &bull; BẢNG TỔNG HỢP</h2>
+
+      <!-- CÂU 8 -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">CÂU 8: CLI: Kiểm tra dữ liệu 4 bảng trong PostgreSQL</span>
+          <span class="card-point">1.0 ĐIỂM</span>
+        </div>
+        <p>Trong cửa sổ <code>psql</code>, bạn gõ lần lượt 4 câu lệnh SELECT:</p>
+        <pre><code>SELECT * FROM "Product";
+SELECT * FROM "Order";
+SELECT * FROM "OrderDetail";
+SELECT * FROM "Shipment";
+\q</code></pre>
+        <p><strong>Số liệu đối chiếu thực tế:</strong></p>
+        <ul>
+          <li><strong>Product:</strong> X giảm từ 50 xuống <strong>48</strong> (50 - 2); Y giảm từ 50 xuống <strong>45</strong> (50 - 5).</li>
+          <li><strong>Order & OrderDetail:</strong> Có bản ghi mới với <code>oid: 1</code> và 2 dòng chi tiết X (qty 2), Y (qty 5).</li>
+          <li><strong>Shipment:</strong> Có bản ghi vận chuyển tương ứng với <code>status: PENDING</code>.</li>
+        </ul>
+        <p style="font-size: 10.5px; color: #0284c7; margin: 4px 0;"><strong>💡 Liên kết Bài 1 & 3:</strong> Bài 2 dùng 1 ACID transaction duy nhất cho Order & Shipment. Sang Bài 3 Microservices, Order Service sẽ gửi event Kafka <code>order-created</code> sang Shipment Service để tạo bản ghi giao hàng bất đồng bộ.</p>
+        <div class="say-box">
+          <div class="say-title">[Nói mẫu với Giảng viên]</div>
+          "Em dùng CLI truy vấn trực tiếp 4 bảng trong PostgreSQL: Bảng Order và OrderDetail ghi nhận đúng thông tin đơn hàng, kho sản phẩm đã được trừ chính xác (X còn 48, Y còn 45), và bảng Shipment đã sinh bản ghi giao hàng tương ứng."
+        </div>
+      </div>
+
+      <!-- RESET SECTION -->
+      <div class="alert-box">
+        <div class="alert-title">[CƠ CHẾ DỌN DẸP / RESET DỮ LIỆU ĐỂ LUYỆN TẬP LẠI]</div>
+        Để tránh lỗi trùng username khi đăng ký lại hoặc tồn kho bị trừ dồn, hãy chọn 1 trong các cách sau:
+      </div>
+
+      <div class="card">
+        <p><strong>Cách 1 (Nhanh nhất):</strong> Nhấp đúp file <code>reset_test_data.bat</code> (hoặc gõ trong CMD: <code>reset_test_data</code>).</p>
+        <p><strong>Cách 2 (Lệnh SQL trực tiếp):</strong></p>
+        <pre><code>docker exec -i ecommerce-postgres psql -U ecommerce -d ecommerce -c "DELETE FROM \"Shipment\"; DELETE FROM \"OrderDetail\"; DELETE FROM \"Order\"; DELETE FROM \"Product\" WHERE pname IN ('X', 'Y'); DELETE FROM \"User\" WHERE username IN ('khach01', 'demo_user');"</code></pre>
+        <p><strong>Cách 3 (Reset xuất xưởng):</strong> <code>docker compose down -v</code> rồi <code>docker compose up -d</code></p>
+      </div>
+
+      <!-- SUMMARY TABLE -->
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 15%;">Bước</th>
+            <th style="width: 50%;">Lệnh thực hiện từng bước (Không viết tắt)</th>
+            <th style="width: 35%;">Hành động & Liên hệ Bài 1, 3</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Câu 4</strong></td>
+            <td>1. <code>docker compose ps</code><br>2. <code>curl http://localhost:3001/health</code></td>
+            <td>Container Healthy, DB connected <em>(Bài 3 có 13 container)</em></td>
+          </tr>
+          <tr>
+            <td><strong>Câu 5</strong></td>
+            <td>1. <code>docker exec -it ecommerce-postgres psql -U ecommerce -d ecommerce</code><br>2. <code>\dt</code><br>3. <code>INSERT INTO "Product" (pname, price, quantity) VALUES ('X', 100, 50), ('Y', 200, 50);</code><br>4. <code>SELECT * FROM "Product";</code></td>
+            <td>Xem 7 bảng và tạo 2 SP X, Y <em>(Bài 1 dùng MongoDB)</em></td>
+          </tr>
+          <tr>
+            <td><strong>Câu 8</strong></td>
+            <td>1. <code>SELECT * FROM "Product";</code><br>2. <code>SELECT * FROM "Order";</code><br>3. <code>SELECT * FROM "OrderDetail";</code><br>4. <code>SELECT * FROM "Shipment";</code><br>5. <code>\q</code></td>
+            <td>Kho trừ: <strong>X còn 48, Y còn 45</strong>; Đơn & Giao hàng lưu đủ <em>(Bài 3 dùng Kafka)</em></td>
+          </tr>
+          <tr>
+            <td><strong>Reset</strong></td>
+            <td><code>reset_test_data.bat</code></td>
+            <td>Dọn sạch dữ liệu test để luyện tập lại từ đầu</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="footer-note">Trang 4 / 4 — Hướng dẫn Demo Vấn đáp Thực hành 2 — Ecommerce Monolith &bull; Chúc bạn đạt 8/8 điểm tối đa!</div>
+  </div>
+
+</body>
+</html>
